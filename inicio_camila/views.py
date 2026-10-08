@@ -1,12 +1,17 @@
 from django.shortcuts import render
+from django.http import Http404
+
+
+GENEROS = [
+    {'nombre': 'Acción', 'descripcion': 'Persecuciones, peleas y mucha adrenalina.'},
+    {'nombre': 'Comedia', 'descripcion': 'Películas para reír y pasar un buen rato.'},
+]
 
 def inicio(request):
-    generos = [
-        {'nombre': 'Acción', 'descripcion': '...'},
-        {'nombre': 'Comedia', 'descripcion': '...'},
-    ]
-    return render(request, 'inicio_camila/inicio.html', {'generos': generos})
+    return render(request, 'inicio_camila/inicio.html', {'generos': GENEROS})
 
 def genero(request, nombre):
-    peliculas = []  # aquí irán las 10 películas
-    return render(request, 'inicio_camila/genero.html', {'nombre': nombre, 'peliculas': peliculas})
+    seleccionado = next((genero for genero in GENEROS if genero['nombre'] == nombre), None)
+    if seleccionado is None:
+        raise Http404('Género no encontrado')
+    return render(request, 'genero.html', {'genero': seleccionado})
