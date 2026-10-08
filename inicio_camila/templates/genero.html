@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{# El título de la pestaña se completa con el nombre del género enviado por la vista. #}
+{% block title %}{{ genero.nombre }}{% endblock %}
+
+{% block content %}
+<section class="py-4">
+    <h1 class="mb-2">{{ genero.nombre }}</h1>
+    <p class="text-muted mb-4">{{ genero.descripcion }}</p>
+
+    {# La vista busca el género y marca qué archivos existen dentro de static/. #}
+    <div class="row g-4">
+        {# Django repite una tarjeta por cada película de genero.peliculas. #}
+        {% for pelicula in genero.peliculas %}
+        <div class="col-12 col-sm-6 col-lg-4">
+            <article class="card h-100 shadow-sm">
+                {# Solo se crea la etiqueta img si la vista confirmó que el archivo existe. #}
+                {% if pelicula.imagen_disponible %}
+                    <img
+                        src="{% static pelicula.imagen %}"
+                        class="card-img-top"
+                        alt="Póster de {{ pelicula.nombre }}"
+                        loading="lazy"
+                        style="height: 320px; object-fit: cover;"
+                    >
+                {% else %}
+                    {# Este recuadro explica por qué no hay póster y evita mostrar una imagen rota. #}
+                    <div class="card-img-top d-flex flex-column align-items-center justify-content-center bg-light text-secondary" style="height: 320px;">
+                        <i class="bi bi-image fs-1" aria-hidden="true"></i>
+                        <span class="mt-2">Póster aún no disponible</span>
+                    </div>
+                {% endif %}
+                <div class="card-body">
+                    {# Estos campos deben coincidir con las claves de cada película en views.py. #}
+                    <h2 class="h5 card-title">{{ pelicula.nombre }}</h2>
+                    <p class="card-text">Año: {{ pelicula.año }}</p>
+                </div>
+            </article>
+        </div>
+        {# Este contenido aparece si el género no tiene películas en la lista. #}
+        {% empty %}
+        <p>Aún no hay películas para este género.</p>
+        {% endfor %}
+    </div>
+
+    {# El enlace usa el nombre de URL "inicio" dentro del namespace de la aplicación. #}
+    <a href="{% url 'inicio_camila:inicio' %}" class="btn btn-outline-secondary mt-4">
+        Volver al inicio
+    </a>
+</section>
+{% endblock %}

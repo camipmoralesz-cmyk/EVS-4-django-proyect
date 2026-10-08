@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+<div class="container px-4 py-5" id="featured-3">
+    <h2 class="pb-2 border-bottom">Elige un género</h2>
+
+    <div class="row g-4 py-5 row-cols-1 row-cols-lg-2">
+        {% for g in generos %}
+        <div class="col-12 col-sm-6 col-lg-3">
+            <article class="card h-100 shadow-sm">
+                {# Se muestra la referencia del género solo si el archivo está disponible. #}
+                {% if g.imagen_disponible %}
+                    <img
+                        src="{% static g.imagen %}"
+                        class="card-img-top"
+                        alt="Imagen de referencia del género {{ g.nombre }}"
+                        loading="lazy"
+                        style="height: 200px; object-fit: cover;"
+                    >
+                {% else %}
+                    {# Mientras no se agregue una imagen del género, usamos un icono temático. #}
+                    <div class="d-flex align-items-center justify-content-center bg-primary text-white" style="height: 200px;">
+                        <i class="{{ g.icono }} display-3" aria-hidden="true"></i>
+                    </div>
+                {% endif %}
+                <div class="card-body d-flex flex-column">
+                    <h3 class="card-title">{{ g.nombre }}</h3>
+                    <p class="card-text">{{ g.descripcion }}</p>
+                    <a href="{% url 'inicio_camila:genero' g.nombre %}" class="btn btn-primary mt-auto">
+                        Ver películas
+                    </a>
+                </div>
+            </article>
+        </div>
+        {% empty %}
+        <p>No hay géneros disponibles.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

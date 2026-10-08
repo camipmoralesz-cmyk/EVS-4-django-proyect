@@ -1,0 +1,36 @@
+
+
+.card {
+    transition: transform 0.2s;
+}
+.card:hover {
+    transform: translateY(-6px);
+}.card {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+}.card:hover {
+    transform: translateY(-8px) scale(1.03);
+}.card {
+    overflow: hidden;
+}
+.card-img-top {
+    transition: transform 0.4s;
+}
+.card:hover .card-img-top {
+    transform: scale(1.1);
+}
+.feature {
+    transition: transform 0.3s;
+}
+.feature:hover {
+    transform: translateY(-6px);
+}
+
+
+
+
+
+
